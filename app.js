@@ -44,15 +44,21 @@ function renderAxes(newXScale, xAxis) {
   // new circles
   function renderCircles(circlesGroup, newXScale, chosenXAxis) {
   
+    var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
     circlesGroup.transition()
       .duration(1000)
       .attr("cx", d => newXScale(d[chosenXAxis]))
+      .attr("fill", "#"+randomColor)
     //   .attr("opacity", "1");
   
     return circlesGroup;
   }
 
   function renderText(textGroup, newXScale,  yLinearScale, chosenXAxis, healthData){
+
+    var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
     chartGroup
     // .select("g")
     .selectAll(".scatterText")
@@ -60,11 +66,18 @@ function renderAxes(newXScale, xAxis) {
     .transition()
     // .attr("visibility", "hidden")
     .attr("x", d => newXScale(d[chosenXAxis]-0.01))
+    .attr("stroke", "#"+randomColor)
     // remove();
 //  
 //    .transition()
 //         // 
-//    .style("background-color", "lightblue")
+
+    
+ randomColor = Math.floor(Math.random()*16777215).toString(16);
+d3.select("body").style("background-color", "#"+randomColor)
+
+
+// chartGroup.style('background-color', 'black')
 
 
     
@@ -139,6 +152,9 @@ function renderAxes(newXScale, xAxis) {
       .attr("transform", `translate(0, ${height})`)
       .call(bottomAxis);
   
+  
+
+
     // append y axis
     chartGroup.append("g")
       .call(leftAxis);
@@ -230,6 +246,9 @@ var textGroup = chartGroup.append("g")
     // x axis labels event listener
     labelsGroup.selectAll("text")
       .on("click", function() {
+
+        
+
         // get value of selection
         var value = d3.select(this).attr("value");
         if (value !== chosenXAxis) {
