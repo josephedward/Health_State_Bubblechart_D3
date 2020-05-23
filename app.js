@@ -52,6 +52,64 @@ function renderAxes(newXScale, xAxis) {
     return circlesGroup;
   }
 
+  function renderText(textGroup, newXScale,  yLinearScale, chosenXAxis, healthData){
+    chartGroup
+    // .select("g")
+    .selectAll(".scatterText")
+//  textGroup
+    .transition()
+    // .attr("visibility", "hidden")
+    .attr("x", d => newXScale(d[chosenXAxis]-0.01))
+    // remove();
+//  
+//    .transition()
+//         // 
+//    .style("background-color", "lightblue")
+
+
+    
+
+//    .selectAll("text")
+//    .append("g")
+//    .remove();
+//    .append("g")
+//     .selectAll("text")
+//         .data(healthData)
+//         .enter()
+//         .append("text")
+//         .attr("text-anchor", "middle")
+//         .attr("x", d => newXScale(d[chosenXAxis]-0.01))
+//         .attr("y", d => yLinearScale(d.poverty-0.22))
+//         .attr("font-size",25)
+//         .attr("stroke", "orange")
+//         // .attr("id", "whiteOutlineEffect")
+//         // .attr("", "red")
+//         .text(data => data.abbr)
+//         .attr("class", "scatterText")
+//         .append().html("<filter id='whiteOutlineEffect'><feMorphology in='SourceAlpha' result='MORPH' operator='dilate' radius='2' />"+
+//         "<feColorMatrix in='MORPH' result='WHITENED' type='matrix' values='-1 0 0 1 0, 0 -1 0 1 0, 0 0 -1 1 0, 0 0 0 1 0'/>"+
+//         "<feMerge><feMergeNode in='WHITENED'/><feMergeNode in='SourceGraphic'/></feMerge></filter>")
+//         .attr("filter", "url(#whiteOutlineEffect)")
+
+//    textGroup.remove()
+
+//    textGroup
+//     .transition()
+//     .duration(1000)
+//     .attr("x", d => newXScale(d[chosenXAxis]))
+   //    .append("text")
+//    .attr("text-anchor", "middle")
+//    .attr("x", d => xLinearScale(d[chosenXAxis]-0.01))
+
+
+    // d3.select(textGroup)
+    // // .transition()
+    // // .duration(1000)
+    // .attr("x", d => newXScale(d[chosenXAxis]))
+
+    return textGroup;
+  }
+
   
   
   d3.csv("healthDemographics.csv").then(function(healthData, err) {
@@ -86,7 +144,9 @@ function renderAxes(newXScale, xAxis) {
       .call(leftAxis);
   
     // append initial circles
-    var circlesGroup = chartGroup.selectAll("circle")
+    var circlesGroup = chartGroup
+    .append("g")
+    .selectAll("circle")
       .data(healthData)
       .enter()
       .append("circle")
@@ -95,25 +155,27 @@ function renderAxes(newXScale, xAxis) {
       .attr("cx", d => xLinearScale(d[chosenXAxis]))
       .attr("cy", d => yLinearScale(d.poverty))
       .attr("r", 30)
-      .attr("fill", "aqua")
+      .attr("fill", "blue")
       .attr("opacity", ".75")
     //   .classed("test")
     //   .append("text")
     //   .attr(" font-family", "sans-serif")
     //   .attr("font-size", "20px")
      
-    chartGroup.selectAll("text")
+var textGroup = chartGroup.append("g")
+    .selectAll("text")
         .data(healthData)
         .enter()
         .append("text")
+        .attr("class", "test")
         .attr("text-anchor", "middle")
         .attr("x", d => xLinearScale(d[chosenXAxis]-0.01))
         .attr("y", d => yLinearScale(d.poverty-0.22))
         .attr("font-size",25)
-        .attr("stroke", "orange")
+        .attr("stroke", "red")
         // .attr("id", "whiteOutlineEffect")
         // .attr("", "red")
-        .text(data => data[chosenXAxis])
+        .text(data => data.abbr)
         .attr("class", "scatterText")
         .append().html("<filter id='whiteOutlineEffect'><feMorphology in='SourceAlpha' result='MORPH' operator='dilate' radius='2' />"+
         "<feColorMatrix in='MORPH' result='WHITENED' type='matrix' values='-1 0 0 1 0, 0 -1 0 1 0, 0 0 -1 1 0, 0 0 0 1 0'/>"+
@@ -186,6 +248,9 @@ function renderAxes(newXScale, xAxis) {
           // updates circles with new x values
           circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
   
+        //   textGroup.remove()
+        //  chartGroup.select(textGroup.abbr).remove()
+        textGroup=renderText(textGroup, xLinearScale, yLinearScale, chosenXAxis, healthData );
           // updates tooltips with new info
         //   circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
   
