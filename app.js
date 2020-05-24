@@ -84,13 +84,14 @@ function updateToolTip(chosenXAxis, circlesGroup) {
   else {
     label = "obesity";
   }
-  var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
 
   var toolTip = d3.tip()
     .attr("class", "tooltip")
     .offset([80, -60])
   
     .html(function(d) {
+      var randomColor = Math.floor(Math.random()*16777215).toString(16);
       return (`<div class="tip" style="height:200px;width:200px;background-color:#${randomColor};">${d.state}<br>${label} ${d[chosenXAxis]}</div>`);
     });
 
@@ -209,10 +210,15 @@ var textGroup = chartGroup.append("g")
     labelsGroup.selectAll("text")
       .on("click", function() {
 
-        
 
+    var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        $("h1").attr("style",`color:#${randomColor} !important;` )
         // get value of selection
         var value = d3.select(this).attr("value");
+
+      var  randomColor = Math.floor(Math.random()*16777215).toString(16);
+        $(".tip").attr("style",`color:#${randomColor} !important;` );
+
         if (value !== chosenXAxis) {
   
           // replaces chosenXAxis with value
@@ -257,24 +263,6 @@ var textGroup = chartGroup.append("g")
       });
 
 
-    
-//   chartGroup.append("text")
-//   .style("text-anchor", "middle")
-//   .style("font-size", "12px")
-//   .selectAll("tspan")
-//   .data(healthData)
-//   .enter()
-//   .append("tspan")
-//     //   .attr("x", function(data) {
-//     //       return xLinearScale(data.poverty - 0);
-//     //   })
-//     //   .attr("y", function(data) {
-//     //       return yLinearScale(data.phys_act - 0.2);
-//     //   })
-//       .text(function(data) {
-//           return data.abbr
-//       });
-
 
 
 
@@ -282,14 +270,3 @@ var textGroup = chartGroup.append("g")
     console.log(error);
   });
   
-
-    // var toolTip = d3.tip()
-    // .attr("class", "tooltip")
-    // .offset([80, -60])
-    // .html(function(d) {
-    //   return (`${d.rockband}<br>${label} ${d[chosenXAxis]}`);
-    // });
-
-
-
-//   });
