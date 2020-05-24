@@ -50,7 +50,6 @@ function renderAxes(newXScale, xAxis) {
       .duration(1000)
       .attr("cx", d => newXScale(d[chosenXAxis]))
       .attr("fill", "#"+randomColor)
-    //   .attr("opacity", "1");
   
     return circlesGroup;
   }
@@ -60,70 +59,57 @@ function renderAxes(newXScale, xAxis) {
     var randomColor = Math.floor(Math.random()*16777215).toString(16);
 
     chartGroup
-    // .select("g")
     .selectAll(".scatterText")
-//  textGroup
     .transition()
-    // .attr("visibility", "hidden")
     .attr("x", d => newXScale(d[chosenXAxis]-0.01))
     .attr("stroke", "#"+randomColor)
-    // remove();
-//  
-//    .transition()
-//         // 
-
-    
- randomColor = Math.floor(Math.random()*16777215).toString(16);
+    randomColor = Math.floor(Math.random()*16777215).toString(16);
 d3.select("body").style("background-color", "#"+randomColor)
-
-
-// chartGroup.style('background-color', 'black')
-
-
-    
-
-//    .selectAll("text")
-//    .append("g")
-//    .remove();
-//    .append("g")
-//     .selectAll("text")
-//         .data(healthData)
-//         .enter()
-//         .append("text")
-//         .attr("text-anchor", "middle")
-//         .attr("x", d => newXScale(d[chosenXAxis]-0.01))
-//         .attr("y", d => yLinearScale(d.poverty-0.22))
-//         .attr("font-size",25)
-//         .attr("stroke", "orange")
-//         // .attr("id", "whiteOutlineEffect")
-//         // .attr("", "red")
-//         .text(data => data.abbr)
-//         .attr("class", "scatterText")
-//         .append().html("<filter id='whiteOutlineEffect'><feMorphology in='SourceAlpha' result='MORPH' operator='dilate' radius='2' />"+
-//         "<feColorMatrix in='MORPH' result='WHITENED' type='matrix' values='-1 0 0 1 0, 0 -1 0 1 0, 0 0 -1 1 0, 0 0 0 1 0'/>"+
-//         "<feMerge><feMergeNode in='WHITENED'/><feMergeNode in='SourceGraphic'/></feMerge></filter>")
-//         .attr("filter", "url(#whiteOutlineEffect)")
-
-//    textGroup.remove()
-
-//    textGroup
-//     .transition()
-//     .duration(1000)
-//     .attr("x", d => newXScale(d[chosenXAxis]))
-   //    .append("text")
-//    .attr("text-anchor", "middle")
-//    .attr("x", d => xLinearScale(d[chosenXAxis]-0.01))
-
-
-    // d3.select(textGroup)
-    // // .transition()
-    // // .duration(1000)
-    // .attr("x", d => newXScale(d[chosenXAxis]))
 
     return textGroup;
   }
 
+
   
+   
+// function used for updating circles group with new tooltip
+function updateToolTip(chosenXAxis, circlesGroup) {
+  $(".tip").remove();
+  
+  var label;
+
+  if (chosenXAxis === "smokes") {
+    label = "smokes";
+  }
+  else {
+    label = "obesity";
+  }
+  var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
+  var toolTip = d3.tip()
+    .attr("class", "tooltip")
+    .offset([80, -60])
+  
+    .html(function(d) {
+      return (`<div class="tip" style="height:200px;width:200px;background-color:#${randomColor};">${d.state}<br>${label} ${d[chosenXAxis]}</div>`);
+    });
+
+  circlesGroup.call(toolTip);
+
+
+  randomColor = Math.floor(Math.random()*16777215).toString(16);
+
+  circlesGroup.on("click", function(data) {
+   toolTip.style("background-color", randomColor )
+    toolTip.show(data);
+  })
+    // onmouseout event
+    // .on("mouseout", function(data, index) {
+      toolTip.hide();
+    // });
+
+  return circlesGroup;
+}
   
   d3.csv("healthDemographics.csv").then(function(healthData, err) {
     console.log(healthData)
@@ -136,7 +122,6 @@ d3.select("body").style("background-color", "#"+randomColor)
     
 
       var xLinearScale = xScale(healthData, 'smokes');
-
 
       var yLinearScale = d3.scaleLinear()
     .domain([0, d3.max(healthData, d => d.poverty)])
@@ -166,17 +151,11 @@ d3.select("body").style("background-color", "#"+randomColor)
       .data(healthData)
       .enter()
       .append("circle")
-    //   .append("text")
-    //   .text(function(d){return d.smokes})
       .attr("cx", d => xLinearScale(d[chosenXAxis]))
       .attr("cy", d => yLinearScale(d.poverty))
       .attr("r", 30)
       .attr("fill", "blue")
       .attr("opacity", ".75")
-    //   .classed("test")
-    //   .append("text")
-    //   .attr(" font-family", "sans-serif")
-    //   .attr("font-size", "20px")
      
 var textGroup = chartGroup.append("g")
     .selectAll("text")
@@ -189,31 +168,12 @@ var textGroup = chartGroup.append("g")
         .attr("y", d => yLinearScale(d.poverty-0.22))
         .attr("font-size",25)
         .attr("stroke", "red")
-        // .attr("id", "whiteOutlineEffect")
-        // .attr("", "red")
         .text(data => data.abbr)
         .attr("class", "scatterText")
         .append().html("<filter id='whiteOutlineEffect'><feMorphology in='SourceAlpha' result='MORPH' operator='dilate' radius='2' />"+
         "<feColorMatrix in='MORPH' result='WHITENED' type='matrix' values='-1 0 0 1 0, 0 -1 0 1 0, 0 0 -1 1 0, 0 0 0 1 0'/>"+
         "<feMerge><feMergeNode in='WHITENED'/><feMergeNode in='SourceGraphic'/></feMerge></filter>")
         .attr("filter", "url(#whiteOutlineEffect)")
-
-    //   chartGroup.selectAll("text")
-    //   .data(healthData)
-    //   .enter()
-    // //   .append("text")
-    // //   .text(function(d){return d.smokes})
-    //   .attr("x", d => xLinearScale(d[chosenXAxis]))
-    //   .attr("y", d => yLinearScale(d.poverty))
-    // //   .attr("r", 30)
-    //   .attr(" font-family", "sans-serif")
-    //   .attr("font-size", "20px")
-      
-    //   .append("text")
-    //   .attr("x", 10)
-    //   .attr("y", function(d,i){ return 10 + i*40})
-    //   .attr("fill", "black")
-    //   
 
   
       var labelsGroup = chartGroup.append("g")
@@ -243,6 +203,8 @@ var textGroup = chartGroup.append("g")
     .classed("axis-text", true)
     .text("Measurement of Poverty Level");
 
+    var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+
     // x axis labels event listener
     labelsGroup.selectAll("text")
       .on("click", function() {
@@ -270,9 +232,10 @@ var textGroup = chartGroup.append("g")
         //   textGroup.remove()
         //  chartGroup.select(textGroup.abbr).remove()
         textGroup=renderText(textGroup, xLinearScale, yLinearScale, chosenXAxis, healthData );
-          // updates tooltips with new info
-        //   circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
-  
+        
+        circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+
+
           // changes classes to change bold text
           if (chosenXAxis === "smokes") {
             smokingLabel
