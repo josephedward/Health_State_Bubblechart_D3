@@ -75,9 +75,7 @@ d3.select("body").style("background-color", "#"+randomColor)
 // function used for updating circles group with new tooltip
 function updateToolTip(chosenXAxis, circlesGroup) {
   $(".tip").remove();
-  
   var label;
-
   if (chosenXAxis === "smokes") {
     label = "smokes";
   }
@@ -89,7 +87,6 @@ function updateToolTip(chosenXAxis, circlesGroup) {
   var toolTip = d3.tip()
     .attr("class", "tooltip")
     .offset([80, -60])
-  
     .html(function(d) {
       var randomColor = Math.floor(Math.random()*16777215).toString(16);
       return (`<div class="tip" style="height:200px;width:200px;background-color:#${randomColor};">${d.state}<br>${label} ${d[chosenXAxis]}</div>`);
@@ -100,13 +97,20 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
   randomColor = Math.floor(Math.random()*16777215).toString(16);
 
-  circlesGroup.on("click", function(data) {
-   toolTip.style("background-color", randomColor )
-    toolTip.show(data);
+  // circlesGroup.on("click", function(data) {
+  //  toolTip.style("background-color", randomColor )
+  //   toolTip.show(data);
+  // })
+
+  circlesGroup.on("mouseover", function (data){
+    toolTip.style("background-color", randomColor)
+    toolTip.style("text-align","center")
+    toolTip.show(data)
   })
+
     // onmouseout event
     // .on("mouseout", function(data, index) {
-      toolTip.hide();
+      // toolTip.hide();
     // });
 
   return circlesGroup;
