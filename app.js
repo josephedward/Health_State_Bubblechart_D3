@@ -239,8 +239,6 @@ var textGroup = chartGroup.append("g")
           // updates circles with new x values
           circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
   
-        //   textGroup.remove()
-        //  chartGroup.select(textGroup.abbr).remove()
         textGroup=renderText(textGroup, xLinearScale, yLinearScale, chosenXAxis, healthData );
         
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
