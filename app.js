@@ -112,13 +112,16 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     toolTip.show(data);
 
 
-    // d3.selectAll("circle").attr("opacity", 0.05)
+    d3.selectAll("circle").attr("opacity", 0.05)
   });
 
   // onmouseout event
-  // .on("mouseout", function(data, index) {
-  // toolTip.hide();
-  // });
+  circlesGroup
+  .on("mouseout", function(data) {
+    d3.selectAll("circle").attr("opacity", 0.75)
+    toolTip.hide(data);
+
+  });
 
   return circlesGroup;
 }
@@ -126,7 +129,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 d3.csv("healthDemographics.csv")
   .then(function (healthData, err) {
     console.log(healthData);
-    d3.select("body").style("background-color", "aqua");
+    // d3.select("body").style("background-color", "aqua");
 
     healthData.forEach(function (d) {
       d.poverty = +d.poverty;
